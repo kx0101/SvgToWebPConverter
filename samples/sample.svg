@@ -1,0 +1,31 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f7fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c3cfe2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#grad1)" />
+  
+  <!-- Text elements with different styles -->
+  <text x="50" y="50" font-family="Arial" font-size="24" font-weight="bold" fill="#333">
+    SVG to WebP Converter
+  </text>
+  <text x="50" y="80" font-family="Arial" font-size="14" fill="#555">
+    High-quality conversion using SkiaSharp
+  </text>
+  
+  <!-- Some vector shapes -->
+  <circle cx="100" cy="150" r="40" stroke="#3498db" stroke-width="3" fill="#3498db" fill-opacity="0.7" />
+  <rect x="160" y="110" width="80" height="80" rx="10" ry="10" fill="#e74c3c" />
+  <polygon points="300,110 340,190 260,190" fill="#2ecc71" />
+  
+  <!-- A path with curves -->
+  <path d="M 50 220 C 100 180, 150 180, 200 220 S 300 260, 350 220" stroke="#9b59b6" stroke-width="4" fill="transparent" />
+  
+  <!-- Some decorative elements -->
+  <circle cx="300" cy="70" r="15" fill="#f1c40f" />
+  <circle cx="330" cy="70" r="8" fill="#e67e22" />
+  <circle cx="350" cy="70" r="5" fill="#e74c3c" />
+</svg>
