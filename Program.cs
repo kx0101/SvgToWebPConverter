@@ -29,8 +29,8 @@ static void RunBenchmark(string sampleSvgPath, string outputDir)
 
     var results = new StringBuilder();
 
-    results.AppendLine("| Scale Factor | Quality | Time (ms) | Memory (MB) | File Size | Compression Ratio |");
-    results.AppendLine("|--------------|---------|-----------|-------------|-----------|-------------------|");
+    results.AppendLine("| Scale Factor | Quality | Time (ms) | File Size | Compression Ratio |");
+    results.AppendLine("|--------------|---------|-----------|-----------|-------------------|");
 
     var originalFileInfo = new FileInfo(sampleSvgPath);
     var originalSize = originalFileInfo.Length;
@@ -47,7 +47,7 @@ static void RunBenchmark(string sampleSvgPath, string outputDir)
                 $"sample_scale{scaleFactor}_q{quality}.webp"
             );
 
-            var (conversionTime, memoryUsed, fileSize) = BenchmarkConversion(
+            var (conversionTime, fileSize) = BenchmarkConversion(
                 sampleSvgPath,
                 outputPath,
                 quality,
@@ -59,7 +59,7 @@ static void RunBenchmark(string sampleSvgPath, string outputDir)
 
             results.AppendLine(
                 $"| {scaleFactor,12:F1} | {quality,7} | {conversionTime.TotalMilliseconds,9:F2} | " +
-                $"{memoryUsed / (1024 * 1024),11:F2} | {FormatFileSize(fileSize),9} | " +
+                $"{FormatFileSize(fileSize),9} |" +
                 $"{compressionRatio,17:F2}x |"
             );
         }
@@ -68,7 +68,7 @@ static void RunBenchmark(string sampleSvgPath, string outputDir)
     Console.WriteLine(results.ToString());
 }
 
-static (TimeSpan conversionTime, long memoryUsed, long fileSize) BenchmarkConversion(
+static (TimeSpan conversionTime, long fileSize) BenchmarkConversion(
     string svgPath,
     string webpPath,
     int quality = 100,
@@ -76,26 +76,16 @@ static (TimeSpan conversionTime, long memoryUsed, long fileSize) BenchmarkConver
     float scaleFactor = 4.0f
 )
 {
-    GC.Collect();
-    GC.WaitForPendingFinalizers();
-    long startMemory = GC.GetTotalMemory(true);
-
     var stopwatch = Stopwatch.StartNew();
 
     ConvertSvgToWebP(svgPath, webpPath, quality, lossless, scaleFactor);
 
     stopwatch.Stop();
 
-    GC.Collect();
-    GC.WaitForPendingFinalizers();
-
-    long endMemory = GC.GetTotalMemory(true);
-    long memoryUsed = endMemory - startMemory;
-
     var fileInfo = new FileInfo(webpPath);
     long fileSize = fileInfo.Length;
 
-    return (stopwatch.Elapsed, memoryUsed, fileSize);
+    return (stopwatch.Elapsed, fileSize);
 }
 
 static void ConvertSvgToWebP(
